@@ -12,8 +12,6 @@ $app->post('/feed','feed'); /* User Feeds  */
 $app->post('/feedUpdate','feedUpdate'); /* User Feeds  */
 $app->post('/feedDelete','feedDelete'); /* User Feeds  */
 $app->post('/getImages', 'getImages');
-
-
 $app->run();
 
 /************************* USER LOGIN *************************************/
@@ -73,11 +71,8 @@ function signup() {
         $email_check = preg_match('~^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.([a-zA-Z]{2,4})$~i', $email);
         $password_check = preg_match('~^[A-Za-z0-9!@#$%^&*()_]{6,20}$~i', $password);
         
-        echo $email_check.'<br/>'.$email;
-        
         if (strlen(trim($username))>0 && strlen(trim($password))>0 && strlen(trim($email))>0 && $email_check>0 && $username_check>0 && $password_check>0)
         {
-            echo 'here';
             $db = getDB();
             $userData = '';
             $sql = "SELECT user_id FROM users WHERE username=:username or email=:email";
@@ -102,6 +97,9 @@ function signup() {
                 
                 $userData=internalUserDetails($email);
                 
+            } else {
+                echo '{"error":{"text":"Username already exists."}}';
+                exit;
             }
             
             $db = null;
@@ -402,4 +400,3 @@ function getImages(){
         echo '{"error":{"text":'. $e->getMessage() .'}}';
     }
 }
-?>
