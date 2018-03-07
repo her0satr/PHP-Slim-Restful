@@ -18,11 +18,11 @@ CREATE TABLE `emailUsers` (
   `user_id` int(11) PRIMARY KEY AUTO_INCREMENT,
   `email` varchar(300) DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL
-) 
+);
 
 CREATE TABLE `imagesData` (
   `img_id` int(11) PRIMARY KEY AUTO_INCREMENT,
   `b64` text DEFAULT NULL,
   `user_id_fk` int(11) DEFAULT NULL
-) 
+);
 ```

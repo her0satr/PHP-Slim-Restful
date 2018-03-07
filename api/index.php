@@ -60,6 +60,7 @@ function login() {
 function signup() {
     $request = \Slim\Slim::getInstance()->request();
     $data = json_decode($request->getBody());
+    
     $email=$data->email;
     $name=$data->name;
     $username=$data->username;
@@ -67,11 +68,11 @@ function signup() {
     
     try {
         
-        $username_check = preg_match('~^[A-Za-z0-9_]{3,20}$~i', $username);
-        $email_check = preg_match('~^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.([a-zA-Z]{2,4})$~i', $email);
-        $password_check = preg_match('~^[A-Za-z0-9!@#$%^&*()_]{6,20}$~i', $password);
-        
-        if (strlen(trim($username))>0 && strlen(trim($password))>0 && strlen(trim($email))>0 && $email_check>0 && $username_check>0 && $password_check>0)
+        // $username_check = preg_match('~^[A-Za-z0-9_]{3,20}$~i', $username);
+        // $email_check = preg_match('~^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.([a-zA-Z]{2,4})$~i', $email);
+        // $password_check = preg_match('~^[A-Za-z0-9!@#$%^&*()_]{6,20}$~i', $password);
+
+        if (strlen(trim($username))>0 && strlen(trim($password))>0 && strlen(trim($email))>0)
         {
             $db = getDB();
             $userData = '';
