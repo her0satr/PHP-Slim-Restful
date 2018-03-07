@@ -22,7 +22,6 @@ function login() {
     $data = json_decode($request->getBody());
     
     try {
-        
         $db = getDB();
         $userData ='';
         $sql = "SELECT user_id, name, email, username FROM users WHERE (username=:username or email=:username) and password=:password ";
