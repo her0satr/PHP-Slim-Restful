@@ -252,13 +252,14 @@ function feed(){
             }
             $stmt->execute();
             $feedData = $stmt->fetchAll(PDO::FETCH_OBJ);
-           
+            
             $db = null;
 
-            if($feedData)
-            echo '{"feedData": ' . json_encode($feedData) . '}';
-            else
-            echo '{"feedData": ""}';
+            if(is_array($feedData)) {
+                echo '{"feedData": ' . json_encode($feedData) . '}';
+            } else {
+                echo '{"feedData": ""}';
+            }
         } else{
             echo '{"error":{"text":"No access"}}';
         }
@@ -314,8 +315,6 @@ function feedUpdate(){
     }
 
 }
-
-
 
 function feedDelete(){
     $request = \Slim\Slim::getInstance()->request();
