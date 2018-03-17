@@ -231,25 +231,20 @@ function feed(){
     $data = json_decode($request->getBody());
     $user_id=$data->user_id;
     $token=$data->token;
-    $lastCreated = $data->lastCreated;
+    $page_no = $data->page_no;
     $systemToken=apiToken($user_id);
    
     try {
-         
         if($systemToken == $token){
             $feedData = '';
             $db = getDB();
-            if($lastCreated){
-                $sql = "SELECT * FROM feed WHERE user_id_fk=:user_id AND created < :lastCreated ORDER BY feed_id DESC LIMIT 5";
-                $stmt = $db->prepare($sql);
-                $stmt->bindParam("user_id", $user_id, PDO::PARAM_INT);
-                $stmt->bindParam("lastCreated", $lastCreated, PDO::PARAM_STR);
-            }
-            else{
-                $sql = "SELECT * FROM feed WHERE user_id_fk=:user_id ORDER BY feed_id DESC LIMIT 5";
-                $stmt = $db->prepare($sql);
-                $stmt->bindParam("user_id", $user_id, PDO::PARAM_INT);
-            }
+
+            $offset_no = ($page_no - 1) * 5;
+
+            $sql = "SELECT * FROM feed WHERE user_id_fk = :user_id ORDER BY feed_id DESC LIMIT :offset_no, 5";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("user_id", $user_id, PDO::PARAM_INT);
+            $stmt->bindParam("offset_no", $offset_no, PDO::PARAM_INT);
             $stmt->execute();
             $feedData = $stmt->fetchAll(PDO::FETCH_OBJ);
             
@@ -265,7 +260,8 @@ function feed(){
         }
        
     } catch(PDOException $e) {
-        echo '{"error":{"text":'. $e->getMessage() .'}}';
+        $result['error']['text'] = $e->getMessage();
+        echo json_encode($result);
     }
 
 }
